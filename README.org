@@ -1,5 +1,5 @@
 #+TITLE: zig-curl
-#+DATE: 2023-09-16T23:16:15+0800
+#+DATE: 2025-10-17T23:16:15+0800
 #+LASTMOD: 2025-10-17T09:10:36+0800
 #+OPTIONS: toc:nil num:nil
 #+STARTUP: content
@@ -10,7 +10,7 @@
 
 #+html: <p align="center"><img src="docs/logo.svg" width="35%"/></p>
 
-Zig bindings for [[https://curl.haxx.se/libcurl/][libcurl]], a free and easy-to-use client-side URL transfer library.
+Zig bindings for [libcurl](https://curl.haxx.se/libcurl/), forked from [jiacai2050/zig-curl](https://github.com/jiacai2050/zig-curl) and updated for Zig 0.16.0-dev with additional changes to the API.
 
 The vendored libraries consist of:
 | Library | Version |
@@ -22,10 +22,10 @@ The vendored libraries consist of:
 * Usage
 #+begin_src bash :results verbatim :exports results :wrap src zig
 cat examples/basic.zig
-#+end_src
+```
 
 #+RESULTS:
-#+begin_src zig
+```zig
 const std = @import("std");
 const curl = @import("curl");
 
@@ -57,7 +57,7 @@ pub fn main() !void {
         std.debug.print("Status code: {d}\nBody: {s}\n", .{ resp.status_code, writer.buffered() });
     }
 }
-#+end_src
+```
 
 Check [[file:examples]] for more examples.
 
@@ -65,25 +65,21 @@ Check [[file:examples]] for more examples.
 See https://jiacai2050.github.io/zig-curl/
 
 * Installation
-#+begin_src bash
-zig fetch --save=curl https://github.com/jiacai2050/zig-curl/archive/refs/tags/${TAG}.zip
-#+end_src
+```sh
+zig fetch --save=zurl git+https://github.com/jules-sommer/zurl
+```
 
-The latest tag can be found on [[https://github.com/jiacai2050/zig-curl/releases/][release page]].
-
-After fetch, import =curl= like this in your =build.zig=:
-#+begin_src zig
-const dep_curl = b.dependency("curl", .{});
-exe.root_module.addImport("curl", dep_curl.module("curl"));
-exe.linkLibC();
-#+end_src
+After fetch, import =zurl= like this in your =build.zig=:
+```zig
+const zurl_dep = b.dependency("zurl", .{});
+```
 
 This library will link to a vendored libcurl by default, you can disable it and link to system-wide with this
-#+begin_src zig
+```zig
 const dep_curl = b.dependency("curl", .{ .link_vendor = false });
 exe.linkSystemLibrary("curl");
 exe.linkLibC();
-#+end_src
+```
 
 * License
 [[file:LICENSE][MIT]]
